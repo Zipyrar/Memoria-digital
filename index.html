@@ -2,26 +2,46 @@
 <!--Poner idioma al español-->
 <html lang="es">
     <head>
+        <!--Link bootstrap necesario para el firebase.-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
         <meta charset="UTF-8">
         <title>Memoria digital</title>
     </head>
-    <body>
+    <body class="container mt-5">
         <h1>Gestor de Recordatorios</h1>
         
         <!--Formulario para crear recordatorios-->
-        <form id="form-recordatorio">
-            <input type="text" id="titulo" placeholder="Título" required/>
-            <input type="date" id="fecha" required/>
-            <input type="time" id="tiempo" required/>
-            <input id="descripcion" placeholder="Descripción (opcional)"/>
-            <br />
-            <button type="submit">Añadir Recordatorio</button>
-        </form>
+        <form id="form-recordatorio" class="mb-5">
+            <div class="mb-3">
+              <label for="titulo" class="form-label">Título</label>
+              <input type="text" class="form-control" id="titulo" placeholder="Título" required />
+            </div>
+            <div class="mb-3">
+              <label for="fecha" class="form-label">Fecha</label>
+              <input type="date" class="form-control" id="fecha" required />
+            </div>
+            <div class="mb-3">
+              <label for="tiempo" class="form-label">Hora</label>
+              <input type="time" class="form-control" id="tiempo" required />
+            </div>
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción (opcional)</label>
+              <input type="text" class="form-control" id="descripcion" placeholder="Descripción" />
+            </div>
+          </form>
+          <!--Botón fuera del formulario para que no se reinicie.-->
+          <button type="submit" class="btn btn-primary">Añadir</button>
+          <!--Salto de línea.-->
+          <br/>
+          <br/>
 
         <h2>Lista de Recordatorios</h2>
         <ul id="listaRecordatorios"></ul>
 
         <!--Scripts para acceder a los js-->
-        <script src="/Javascript/addReminder.js"></script>
+        <script type="module" src="./Javascript/firebaseConfig.js"></script>
+        <script type="module" src="./Javascript/addReminder.js"></script>
     </body>
 </html>
+
+<!--Recordar abrir con el Live server.-->
