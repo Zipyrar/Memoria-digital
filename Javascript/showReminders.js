@@ -25,13 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Botón de edición.
         item.querySelector('.edit-btn').addEventListener('click', () => {
-            // Cargar los datos del recordatorio en el formulario para editar.
             document.getElementById('titulo').value = reminder.title;
             document.getElementById('fecha').value = reminder.date;
             document.getElementById('tiempo').value = reminder.time;
             document.getElementById('descripcion').value = reminder.description;
-
-            // Guardar la clave en localStorage para que editReminder.js la use.
+        
+            // Guardar la clave en localStorage.
             localStorage.setItem('editingKey', key);
         });
 

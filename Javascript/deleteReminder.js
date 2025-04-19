@@ -3,7 +3,7 @@ import { database } from '../firebaseConfig.js';
 import { ref, remove } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
 /**
- * Eliminar recordatorio de la base de datos de Firebase.
+ * Elimina un recordatorio de la base de datos de Firebase.
  * @param {string} reminderKey - Clave del recordatorio a eliminar.
  */
 export function deleteReminder(reminderKey) {
