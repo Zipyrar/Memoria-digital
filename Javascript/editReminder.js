@@ -1,97 +1,53 @@
+// Importar el firebase.
 import { database } from '../firebaseConfig.js';
-import {
-    ref,
-    push,
-    set,
-    get,
-    onValue,
-} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { ref, remove, set } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
-// Función para editar recordatorio.
-function editReminder(id, reminder) {
-    document.getElementById('titulo').value = reminder.title;
-    document.getElementById('fecha').value = reminder.date;
-    document.getElementById('tiempo').value = reminder.time;
-    document.getElementById('descripcion').value = reminder.description;
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('form-recordatorio');
 
-    const formButton = document.getElementById('form-recordatorio').querySelector('button[type="submit"]');
-    formButton.innerText = 'Guardar cambios';
-    formButton.dataset.id = id;
-}
+    // Obtener la clave del recordatorio en edición (almacenada en localStorage)
+    const editingKey = localStorage.getItem('editingKey');  
 
-// Evento para guardar el formulario.
-const form = document.getElementById('form-recordatorio');
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-    const title = document.getElementById('titulo').value.trim();
-    const date = document.getElementById('fecha').value;
-    const time = document.getElementById('tiempo').value;
-    const description = document.getElementById('descripcion').value.trim();
+        // Obtener los valores del formulario directamente
+        const title = document.getElementById('titulo').value.trim();
+        const date = document.getElementById('fecha').value;
+        const time = document.getElementById('tiempo').value;
+        const description = document.getElementById('descripcion').value.trim();
 
-    if (!title || !date || !time) {
-        alert('Completa todos los campos obligatorios.');
-        return;
-    }
+        // Validar que los campos obligatorios no estén vacíos
+        if (!title || !date || !time) {
+            alert('Completa todos los campos obligatorios.');
+            return;
+        }
 
-    const formButton = form.querySelector('button[type="submit"]');
-    const id = formButton.dataset.id;
+        if (editingKey) {
+            // Si estamos editando un recordatorio, eliminamos el recordatorio anterior
+            const reminderRef = ref(database, 'recordatorios/' + editingKey);
 
-    const updated = {
-        title,
-        date,
-        time,
-        description: description || 'Sin descripción'
-    };
+            remove(reminderRef).then(() => {
+                // Después de eliminarlo, actualizamos el mismo recordatorio con la misma clave
+                const reminderToUpdateRef = ref(database, 'recordatorios/' + editingKey);  // Usamos la misma clave
+                set(reminderToUpdateRef, {
+                    title: title,
+                    date: date,
+                    time: time,
+                    description: description || 'Sin descripción'
+                }).then(() => {
+                    alert('Recordatorio actualizado');
+                    localStorage.removeItem('editingKey');  // Limpiar la clave de edición
+                    form.reset();  // Reiniciar formulario
+                    window.location.href = 'mostrar.html';  // Redirigir a la página de mostrar
+                }).catch((error) => {
+                    console.error("Error al guardar el recordatorio actualizado:", error);
+                });
+            }).catch((error) => {
+                console.error("Error eliminando el recordatorio anterior:", error);
+            });
 
-    if (id) {
-        const reminderRef = ref(database, 'recordatorios/' + id);
-        await set(reminderRef, updated);
-    } else {
-        const newReminderRef = push(ref(database, 'recordatorios'));
-        await set(newReminderRef, updated);
-    }
-
-    form.reset();
-    formButton.innerText = 'Añadir';
-    delete formButton.dataset.id;
-});
-
-// Mostrar recordatorios con botones de edición.
-function showReminders(reminders) {
-    const list = document.getElementById('listaRecordatorios');
-    list.innerHTML = '';
-
-    for (const id in reminders) {
-        const reminder = reminders[id];
-        const item = document.createElement('li');
-        item.innerHTML = `
-            <strong>${reminder.title}</strong> - ${reminder.date} ${reminder.time}<br/>
-            <em>${reminder.description}</em>
-            <button class="edit-btn" data-id="${id}">Editar</button>
-        `;
-
-        item.querySelector('.edit-btn').addEventListener('click', () => {
-            editReminder(id, reminder);
-        });
-
-        list.appendChild(item);
-    }
-}
-
-// Cargar recordatorios desde Firebase (sin duplicar).
-function chargeReminders() {
-    const remindersRef = ref(database, 'recordatorios');
-
-    // Escucha los cambios y actualiza la interfaz.
-    onValue(remindersRef, (snapshot) => {
-        if (snapshot.exists()) {
-            const reminders = snapshot.val();
-            showReminders(reminders);
-        } else {
-            showReminders({});
         }
     });
-}
+});
 
-chargeReminders();

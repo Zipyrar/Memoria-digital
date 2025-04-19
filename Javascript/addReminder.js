@@ -1,11 +1,10 @@
 // Importar el firebase.
 import { database } from '../firebaseConfig.js';
-import { ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { ref, push } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
 // Esperar a que el DOM esté completamente cargado.
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('form-recordatorio');
-    const list = document.getElementById('listaRecordatorios');
 
     form.addEventListener('submit', (e) => {
         e.preventDefault(); // Evitar que se recargue la página.
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Crear el nuevo recordatorio.
+        // Crear el objeto de recordatorio
         const newReminder = {
             title,
             date,
@@ -30,20 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
             description: description || 'Sin descripción'
         };
 
-        // Guardarlo en Firebase.
+        // Guardar el nuevo recordatorio en Firebase
         const remindersRef = ref(database, 'recordatorios');
-        push(remindersRef, newReminder);
-
-        // Reiniciar formulario.
-        form.reset();
-    });
-
-    const remindersRef = ref(database, 'recordatorios');
-    onChildAdded(remindersRef, (data) => {
-        const reminder = data.val();
-        // Crear elemento para mostrar el recordatorio.
-        const item = document.createElement('li');
-        item.innerHTML = `<strong>${reminder.title}</strong> - ${reminder.date} ${reminder.time}<br/><em>${reminder.description}</em>`;
-        list.appendChild(item);
+        push(remindersRef, newReminder).then(() => {
+            alert('Recordatorio guardado');
+            form.reset();  // Reiniciar formulario
+        }).catch((error) => {
+            console.error("Error guardando el recordatorio:", error);
+        });
     });
 });
