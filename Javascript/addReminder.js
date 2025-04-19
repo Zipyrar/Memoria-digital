@@ -1,5 +1,5 @@
 // Importar el firebase.
-import { database } from '/firebaseConfig.js';
+import { database } from '../firebaseConfig.js';
 import { ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
 // Esperar a que el DOM esté completamente cargado.
