@@ -1,43 +1,39 @@
-<!DOCTYPE html5>
-<!--Poner idioma al español.-->
+<!DOCTYPE html>
 <html lang="es">
     <head>
-        <!--Link bootstrap necesario para el firebase.-->
+        <!-- Link a Bootstrap para el diseño de la interfaz -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
         <meta charset="UTF-8">
-        <title>Memoria digital</title>
+        <title>Memoria Digital</title>
     </head>
     <body class="container mt-5">
         <h1>Gestor de Recordatorios</h1>
-        
-        <!--Formulario para crear recordatorios.-->
+
+        <!-- Formulario para crear recordatorios -->
         <form id="form-recordatorio" class="mb-5">
             <div class="mb-3">
-              <label for="titulo" class="form-label">Título</label>
-              <input type="text" class="form-control" id="titulo" placeholder="Título" required />
+                <label for="titulo" class="form-label">Título</label>
+                <input type="text" class="form-control" id="titulo" placeholder="Título" required />
             </div>
             <div class="mb-3">
-              <label for="fecha" class="form-label">Fecha</label>
-              <input type="date" class="form-control" id="fecha" required />
+                <label for="fecha" class="form-label">Fecha</label>
+                <input type="date" class="form-control" id="fecha" required />
             </div>
             <div class="mb-3">
-              <label for="tiempo" class="form-label">Hora</label>
-              <input type="time" class="form-control" id="tiempo" required />
+                <label for="tiempo" class="form-label">Hora</label>
+                <input type="time" class="form-control" id="tiempo" required />
             </div>
             <div class="mb-3">
-              <label for="descripcion" class="form-label">Descripción (opcional)</label>
-              <input type="text" class="form-control" id="descripcion" placeholder="Descripción" />
+                <label for="descripcion" class="form-label">Descripción (opcional)</label>
+                <input type="text" class="form-control" id="descripcion" placeholder="Descripción" />
             </div>
             <button type="submit" class="btn btn-primary">Añadir</button>
-          </form>
-          <!--Salto de línea.-->
-          <br/>
-          <br/>
+        </form>
 
         <h2>Lista de Recordatorios</h2>
         <ul id="listaRecordatorios"></ul>
 
-        <!--Scripts para acceder a los js-->
+        <!-- Scripts para interactuar con Firebase y gestionar recordatorios -->
         <script type="module" src="firebaseConfig.js"></script>
         <script type="module" src="javascript/addReminder.js"></script>
         <script type="module" src="javascript/showReminders.js"></script>

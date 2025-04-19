@@ -1,8 +1,7 @@
-// Importar el firebase.
+// Importar lo de Firebase.
 import { database } from '../firebaseConfig.js';
 import { ref, push } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
-// Esperar a que el DOM esté completamente cargado.
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('form-recordatorio');
 
@@ -15,13 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const time = document.getElementById('tiempo').value;
         const description = document.getElementById('descripcion').value.trim();
 
-        // Comprobar si alguno de los elementos obligatorios están vacíos.
+        // Verificar que los campos obligatorios estén completos.
         if (!title || !date || !time) {
             alert('Completa todos los campos obligatorios.');
             return;
         }
 
-        // Crear el objeto de recordatorio
+        // Crear el objeto de recordatorio.
         const newReminder = {
             title,
             date,
@@ -29,11 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
             description: description || 'Sin descripción'
         };
 
-        // Guardar el nuevo recordatorio en Firebase
+        // Guardar el nuevo recordatorio en Firebase.
         const remindersRef = ref(database, 'recordatorios');
         push(remindersRef, newReminder).then(() => {
             alert('Recordatorio guardado');
-            form.reset();  // Reiniciar formulario
+            form.reset(); // Reiniciar el formulario.
         }).catch((error) => {
             console.error("Error guardando el recordatorio:", error);
         });
