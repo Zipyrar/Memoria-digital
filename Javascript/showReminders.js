@@ -1,53 +1,50 @@
-// Importar lo de Firebase.
+// Importar Firebase.
 import { database } from '../firebaseConfig.js';
-import { ref, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { ref, onValue, remove } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const list = document.getElementById('listaRecordatorios');
-
-    // Agregar los recordatorios existentes a la lista.
+    const lista = document.getElementById('listaRecordatorios');
     const remindersRef = ref(database, 'recordatorios');
-    onChildAdded(remindersRef, (data) => {
-        const reminder = data.val();
-        const key = data.key;
 
-        // Crear el elemento de lista para mostrar el recordatorio.
-        const item = document.createElement('li');
-        item.innerHTML = `
-            <strong>${reminder.title}</strong> - ${reminder.date} ${reminder.time}<br/>
-            <em>${reminder.description}</em><br/>
-            <button class="edit-btn" data-key="${key}">Editar</button>
-            <button class="delete-btn" data-key="${key}">Eliminar</button>
-        `;
+    onValue(remindersRef, (snapshot) => {
+        lista.innerHTML = ''; // Limpiar lista
 
-        // Agregar el recordatorio a la lista.
-        list.appendChild(item);
+        snapshot.forEach(childSnapshot => {
+            const reminder = childSnapshot.val();
+            const key = childSnapshot.key;
 
-        // Botón de edición.
-        item.querySelector('.edit-btn').addEventListener('click', () => {
-            document.getElementById('titulo').value = reminder.title;
-            document.getElementById('fecha').value = reminder.date;
-            document.getElementById('tiempo').value = reminder.time;
-            document.getElementById('descripcion').value = reminder.description;
-        
-            // Guardar la clave en localStorage.
-            localStorage.setItem('editingKey', key);
+            const item = document.createElement('li');
+            item.classList.add('mb-3', 'list-group-item');
+
+            // Mostrar todos los datos.
+            item.innerHTML = `
+                <strong>${reminder.title}</strong><br/>
+                Fecha: ${reminder.date}<br/>
+                Hora: ${reminder.time}<br/>
+                ${reminder.description ? `Descripción: ${reminder.description}<br/>` : ''}
+                <button class="btn btn-sm btn-warning me-2 editar" data-id="${key}">Editar</button>
+                <button class="btn btn-sm btn-danger eliminar" data-id="${key}">Eliminar</button>
+            `;
+
+            lista.appendChild(item);
         });
 
-        // Botón para eliminar.
-        item.querySelector('.delete-btn').addEventListener('click', () => {
-            const confirmDelete = confirm('¿Estás seguro de que quieres eliminar este recordatorio?');
-            if (confirmDelete) {
-                const reminderRef = ref(database, `recordatorios/${key}`);
-                remove(reminderRef)
-                    .then(() => {
-                        alert('Recordatorio eliminado');
-                        item.remove(); // Quitar de la lista en el DOM.
-                    })
-                    .catch((error) => {
-                        console.error('Error al eliminar el recordatorio:', error);
-                    });
-            }
+        // Asignar eventos después de insertar los elementos.
+        document.querySelectorAll('.editar').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.target.dataset.id;
+                const recordatorio = snapshot.child(id).val();
+
+                // Guardar datos en localStorage.
+                localStorage.setItem('editingKey', id);
+                localStorage.setItem('editingTitle', recordatorio.title);
+                localStorage.setItem('editingDate', recordatorio.date);
+                localStorage.setItem('editingTime', recordatorio.time);
+                localStorage.setItem('editingDescription', recordatorio.description || '');
+
+                // Recargar para que el form lo detecte.
+                location.reload();
+            });
         });
     });
 });
