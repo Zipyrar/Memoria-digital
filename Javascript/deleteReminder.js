@@ -13,12 +13,23 @@ export function deleteReminder(reminderKey) {
         return;
     }
 
-    const reminderRef = ref(database, `recordatorios/${reminderKey}`);
-    remove(reminderRef)
-        .then(() => {
-            console.log(`Recordatorio con clave ${reminderKey} eliminado.`);
-        })
-        .catch((error) => {
-            console.error("Error al eliminar el recordatorio:", error);
-        });
+    // Mostrar una confirmación al usuario.
+    const confirmDelete = confirm("¿Estás seguro de que deseas eliminar este recordatorio?");
+    
+    if (confirmDelete) {
+        const reminderRef = ref(database, `recordatorios/${reminderKey}`);
+        
+        // Intentar eliminar el recordatorio.
+        remove(reminderRef)
+            .then(() => {
+                alert("Recordatorio eliminado con éxito.");
+                console.log(`Recordatorio con clave ${reminderKey} eliminado.`);
+            })
+            .catch((error) => {
+                console.error("Error al eliminar el recordatorio:", error);
+                alert("Hubo un error al eliminar el recordatorio.");
+            });
+    } else {
+        alert("Eliminación cancelada por el usuario.");
+    }
 }
