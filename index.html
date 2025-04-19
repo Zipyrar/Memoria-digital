@@ -1,4 +1,5 @@
 <!DOCTYPE html5>
+<!--Poner idioma al español-->
 <html lang="es">
     <head>
         <meta charset="UTF-8">
@@ -7,11 +8,17 @@
     <body>
         <h1>Gestor de Recordatorios</h1>
         
+        <!--Formulario para crear recordatorios-->
         <form id="form-recordatorio">
             <input type="text" id="titulo" placeholder="Título" required/>
             <input type="date" id="fecha" required/>
             <input type="time" id="tiempo" required/>
             <input id="descripcion" placeholder="Descripción (opcional)"/>
+            <br />
+            <button type="submit">Añadir Recordatorio</button>
         </form>
+
+        <h2>Lista de Recordatorios</h2>
+        <ul id="listaRecordatorios"></ul>
     </body>
 </html>
