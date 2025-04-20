@@ -14,11 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const date = localStorage.getItem('editingDate') || '';
         const time = localStorage.getItem('editingTime') || '';
         const description = localStorage.getItem('editingDescription') || '';
+        const alarm = localStorage.getItem('editingAlarm') === 'true'; // Leer el estado del checkbox.
 
         document.getElementById('titulo').value = title;
         document.getElementById('fecha').value = date;
         document.getElementById('tiempo').value = time;
         document.getElementById('descripcion').value = description;
+        document.getElementById('alarma').value = alarm;
 
         // Cambiar el texto del botón a "Actualizar".
         btnSubmit.textContent = 'Actualizar';
@@ -35,12 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('editingDate');
         localStorage.removeItem('editingTime');
         localStorage.removeItem('editingDescription');
+        localStorage.removeItem('editingAlarm');
 
         // Restaurar los valores iniciales en el formulario.
         document.getElementById('titulo').value = '';
         document.getElementById('fecha').value = '';
         document.getElementById('tiempo').value = '';
         document.getElementById('descripcion').value = '';
+        document.getElementById('alarma').checked = false;
 
         // Volver a poner el texto del botón a "Añadir".
         btnSubmit.textContent = 'Añadir';
@@ -58,13 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const time = document.getElementById('tiempo').value;
         const description = document.getElementById('descripcion').value.trim() || 'Sin descripción';
 
+        // Obtener el estado del checkbox de alarma.
+        const alarm = document.getElementById('alarma').checked;
+
         // Comprobar que no están vacíos.
         if (!title || !date || !time) {
             alert('Completa todos los campos obligatorios.');
             return;
         }
 
-        const reminderData = { title, date, time, description };
+        const reminderData = { title, date, time, description, alarm };
 
         if (editingKey) {
             const reminderRef = ref(database, `recordatorios/${editingKey}`);
@@ -80,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.removeItem('editingDate');
                     localStorage.removeItem('editingTime');
                     localStorage.removeItem('editingDescription');
+                    localStorage.removeItem('editingAlarm');
 
                     btnCancel.style.display = 'none'; // Ocultar botón de cancelar
                     location.reload(); // Actualizar lista.

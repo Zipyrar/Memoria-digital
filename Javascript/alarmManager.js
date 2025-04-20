@@ -20,7 +20,8 @@ function findOutAlarms() {
             if (
                 reminder.date === today &&
                 reminder.time === actualHour &&
-                !sounded.has(key)
+                !sounded.has(key) &&
+                reminder.alarm // Verificar si la alarma está activada.
             ) {
                 // Mostrar alerta y sonar alarma.
                 showAlarm(reminder);
