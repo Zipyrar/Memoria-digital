@@ -32,8 +32,8 @@ function findOutAlarms() {
 }
 
 function showAlarm(reminder) {
-    const sonido = new Audio('alarms/attention_tone.mp3');
-    sonido.play();
+    const sound = new Audio('alarms/attention_tone.mp3');
+    sound.play();
 
     const container = document.getElementById("alarm-toast-container");
 
