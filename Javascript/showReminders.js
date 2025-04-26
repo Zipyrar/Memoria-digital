@@ -22,10 +22,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 Fecha: ${reminder.date}<br/>
                 Hora: ${reminder.time}<br/>
                 ${reminder.description ? `Descripción: ${reminder.description}<br/>` : ''}
-                Repetición: ${reminder.repetition === 'none' ? 'Ninguna' : reminder.repetition === 'custom' ? 'Personalizada' : reminder.repetition}<br/>
+                 Repetición: ${
+                    reminder.repetition === 'none'
+                        ? 'Ninguna'
+                        : reminder.repetition === 'daily'
+                            ? 'Diariamente'
+                            : reminder.repetition === 'weekly'
+                                ? 'Semanalmente'
+                                : reminder.repetition === 'custom'
+                                    ? `Personalizada (${(reminder.days || []).join(', ')})`
+                                    : reminder.repetition
+                }<br/>
+                Alarma: ${reminder.alarm ? 'Activada' : 'Desactivada'}<br/>
                 <button class="btn btn-sm btn-warning me-2 editar" data-id="${key}">Editar</button>
                 <button class="btn btn-sm btn-danger eliminar" data-id="${key}">Eliminar</button>
             `;
+
     
             lista.appendChild(item);
         });
