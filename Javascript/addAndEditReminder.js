@@ -15,12 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const time = localStorage.getItem('editingTime') || '';
         const description = localStorage.getItem('editingDescription') || '';
         const alarm = localStorage.getItem('editingAlarm') === 'true'; // Leer el estado del checkbox.
+        const repetition = localStorage.getItem('editingRepetition') || 'none'; // Obtener la repetición guardada.
 
         document.getElementById('titulo').value = title;
         document.getElementById('fecha').value = date;
         document.getElementById('tiempo').value = time;
         document.getElementById('descripcion').value = description;
-        document.getElementById('alarma').value = alarm;
+        document.getElementById('alarma').checked = alarm;
+        document.getElementById('repeticion').value = repetition;
 
         // Cambiar el texto del botón a "Actualizar".
         btnSubmit.textContent = 'Actualizar';
@@ -38,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('editingTime');
         localStorage.removeItem('editingDescription');
         localStorage.removeItem('editingAlarm');
+        localStorage.removeItem('editingRepetition');
 
         // Restaurar los valores iniciales en el formulario.
         document.getElementById('titulo').value = '';
@@ -45,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('tiempo').value = '';
         document.getElementById('descripcion').value = '';
         document.getElementById('alarma').checked = false;
+        document.getElementById('repeticion').value = 'none';
 
         // Volver a poner el texto del botón a "Añadir".
         btnSubmit.textContent = 'Añadir';
@@ -65,13 +69,34 @@ document.addEventListener('DOMContentLoaded', () => {
         // Obtener el estado del checkbox de alarma.
         const alarm = document.getElementById('alarma').checked;
 
-        // Comprobar que no están vacíos.
+        // Obtener el valor de la repetición seleccionada.
+        const repetition = document.getElementById('repeticion').value;
+
+        // Obtener los días seleccionados si la repetición es "custom".
+        let days = [];
+        if (repetition === 'custom') {
+            ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'].forEach(day => {
+                if (document.getElementById(day).checked) {
+                    days.push(day);
+                }
+            });
+        }
+
+        // Comprobar que no están vacíos los campos obligatorios.
         if (!title || !date || !time) {
             alert('Completa todos los campos obligatorios.');
             return;
         }
 
-        const reminderData = { title, date, time, description, alarm };
+        const reminderData = { 
+            title, 
+            date, 
+            time, 
+            description, 
+            alarm, 
+            repetition, 
+            days // Guardar los días si son seleccionados.
+        };
 
         if (editingKey) {
             const reminderRef = ref(database, `recordatorios/${editingKey}`);
@@ -88,8 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.removeItem('editingTime');
                     localStorage.removeItem('editingDescription');
                     localStorage.removeItem('editingAlarm');
+                    localStorage.removeItem('editingRepetition');
 
-                    btnCancel.style.display = 'none'; // Ocultar botón de cancelar
+                    btnCancel.style.display = 'none'; // Ocultar botón de cancelar.
                     location.reload(); // Actualizar lista.
                 })
                 .catch((error) => {
