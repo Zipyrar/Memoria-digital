@@ -7,6 +7,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSubmit = form.querySelector('button[type="submit"]');
     const btnCancel = document.getElementById('cancelar-edicion');
 
+    // Función para resetear los días personalizados.
+    function resetDiasPersonalizados() {
+        ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'].forEach(day => {
+            const checkbox = document.getElementById(day);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+        });
+        const diasPersonalizados = document.getElementById('dias-personalizados');
+        if (diasPersonalizados) {
+            diasPersonalizados.style.display = 'none';
+        }
+    }
+
     // Rellenar campos si hay edición en curso.
     const editingKey = localStorage.getItem('editingKey');
     if (editingKey) {
@@ -16,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const description = localStorage.getItem('editingDescription') || '';
         const alarm = localStorage.getItem('editingAlarm') === 'true'; // Leer el estado del checkbox.
         const repetition = localStorage.getItem('editingRepetition') || 'none'; // Obtener la repetición guardada.
+        const customDays = JSON.parse(localStorage.getItem('editingCustomDays') || '[]'); // Obtener los días personalizados.
 
         document.getElementById('titulo').value = title;
         document.getElementById('fecha').value = date;
@@ -23,6 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('descripcion').value = description;
         document.getElementById('alarma').checked = alarm;
         document.getElementById('repeticion').value = repetition;
+
+        // Forzar el evento de cambio manualmente.
+        const event = new Event('change');
+        document.getElementById('repeticion').dispatchEvent(event);
+
+        // Si hay repetición personalizada, marca los días seleccionados.
+        if (repetition === 'custom') {
+            customDays.forEach(day => {
+                const checkbox = document.getElementById(day);
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+            });
+        }
 
         // Cambiar el texto del botón a "Actualizar".
         btnSubmit.textContent = 'Actualizar';
@@ -41,19 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('editingDescription');
         localStorage.removeItem('editingAlarm');
         localStorage.removeItem('editingRepetition');
+        localStorage.removeItem('editingCustomDays');
 
         // Restaurar los valores iniciales en el formulario.
-        document.getElementById('titulo').value = '';
-        document.getElementById('fecha').value = '';
-        document.getElementById('tiempo').value = '';
-        document.getElementById('descripcion').value = '';
-        document.getElementById('alarma').checked = false;
-        document.getElementById('repeticion').value = 'none';
+        form.reset();
+        resetDiasPersonalizados();
 
-        // Volver a poner el texto del botón a "Añadir".
         btnSubmit.textContent = 'Añadir';
-
-        // Ocultar el botón de "Cancelar".
         btnCancel.style.display = 'none';
     });
 
@@ -66,20 +89,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const time = document.getElementById('tiempo').value;
         const description = document.getElementById('descripcion').value.trim() || 'Sin descripción';
 
-        // Obtener el estado del checkbox de alarma.
         const alarm = document.getElementById('alarma').checked;
-
-        // Obtener el valor de la repetición seleccionada.
         const repetition = document.getElementById('repeticion').value;
 
-        // Obtener los días seleccionados si la repetición es "custom".
         let days = [];
         if (repetition === 'custom') {
             ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'].forEach(day => {
-                if (document.getElementById(day).checked) {
+                const checkbox = document.getElementById(day);
+                if (checkbox && checkbox.checked) {
                     days.push(day);
                 }
             });
+            // Guardar los días seleccionados en localStorage para su uso en la edición futura.
+            localStorage.setItem('editingCustomDays', JSON.stringify(days));
         }
 
         // Comprobar que no están vacíos los campos obligatorios.
@@ -95,8 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
             description, 
             alarm, 
             repetition, 
-            days // Guardar los días si son seleccionados.
+            days: repetition === 'custom' ? days : []
         };
+
+        resetDiasPersonalizados();
 
         if (editingKey) {
             const reminderRef = ref(database, `recordatorios/${editingKey}`);
@@ -104,6 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(() => {
                     alert('Recordatorio actualizado');
                     form.reset();
+                    resetDiasPersonalizados();
+
                     btnSubmit.textContent = 'Añadir';
 
                     // Limpiar estado de edición.
@@ -114,9 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.removeItem('editingDescription');
                     localStorage.removeItem('editingAlarm');
                     localStorage.removeItem('editingRepetition');
+                    localStorage.removeItem('editingCustomDays');
 
-                    btnCancel.style.display = 'none'; // Ocultar botón de cancelar.
-                    location.reload(); // Actualizar lista.
+                    btnCancel.style.display = 'none';
+                    location.reload();
                 })
                 .catch((error) => {
                     console.error('Error actualizando:', error);
@@ -127,6 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(() => {
                     alert('Recordatorio guardado');
                     form.reset();
+                    resetDiasPersonalizados();
+
+                    // Forzar evento change para ocultar bien los días personalizados.
+                    const repeticionSelect = document.getElementById('repeticion');
+                    repeticionSelect.dispatchEvent(new Event('change'));
                 })
                 .catch((error) => {
                     console.error('Error guardando:', error);
