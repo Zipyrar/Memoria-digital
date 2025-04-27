@@ -6,12 +6,11 @@
 
 <ul>
   <li>Descripción.</li>
-  <li>Estado del proyecto.</li>
-  <li>Demostración de funciones y aplicaciones.</li>
-  <li>Acceso al Proyecto.</li>
-  <li>Tecnologías utilizadas.</li>
-  <li>Personas Contribuyentes.</li>
-  <li>Personas Desarrolladoras del Proyecto.</li>
+  <li>Funciones del proyecto.</li>
+  <li>Descargar, descomprimir y ejecutar el proyecto</li>
+  <li>Tecnologías usadas.</li>
+  <li>Personas Colaboradoras del Proyecto.</li>
+  <li>Desarrollador del Proyecto.</li>
   <li>Licencia.</li>
 </ul>
 <br/>
