@@ -43,6 +43,7 @@
 <ul>
   <li>JavaScript</li>
   <li>HTML5</li>
+  <li>Firebase, con Realtime Database</li>
 </ul>
 <br/>
 <h3><u>Colaboradores</u></h3>
