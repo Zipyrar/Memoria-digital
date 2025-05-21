@@ -19,7 +19,7 @@ function findOutAlarms() {
             const reminder = childSnapshot.val();
 
             // Verificar si la alarma está activada y la fecha y hora coinciden.
-            const isTimeMatch = reminder.date === today && reminder.time === actualHour;
+            const isTimeMatch = reminder.time === actualHour;
             const isAlarmActive = reminder.alarm;
 
             // Comprobar si el recordatorio tiene repetición y si corresponde a hoy.
@@ -41,23 +41,26 @@ function findOutAlarms() {
 
 // Función para verificar la repetición de un recordatorio.
 function checkRepetition(reminder, dayOfWeek) {
+    const today = new Date().toISOString().split('T')[0];
+
     switch (reminder.repetition) {
         case 'none':
-            return false; // No repetir.
+            return reminder.date === today; // Solo sonar si hoy es la fecha exacta
         case 'daily':
-            return true; // Repetir todos los días.
+            return true;
         case 'weekly':
-            return reminder.days && reminder.days.includes(getDayName(dayOfWeek)); // Verificar si el día está en la lista de días seleccionados.
+            return reminder.days && reminder.days.includes(getDayName(dayOfWeek));
         case 'monthly':
-            return isSameDayOfMonth(reminder.date); // Verificar si es el mismo día del mes (repetición mensual).
+            return isSameDayOfMonth(reminder.date);
         case 'yearly':
-            return isSameDateOfYear(reminder.date); // Verificar si es el mismo día y mes (repetición anual).
+            return isSameDateOfYear(reminder.date);
         case 'custom':
-            return reminder.days && reminder.days.includes(getDayName(dayOfWeek)); // Verificar si el día está en la lista de días seleccionados.
+            return reminder.days && reminder.days.includes(getDayName(dayOfWeek));
         default:
-            return false; // Si la repetición no es válida, no debería sonar.
+            return false;
     }
 }
+
 
 // Función para obtener el nombre del día a partir del índice (0 = Domingo, 1 = Lunes, ..., 6 = Sábado).
 function getDayName(dayOfWeek) {
