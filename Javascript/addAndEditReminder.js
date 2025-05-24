@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const date = localStorage.getItem('editingDate') || '';
         const time = localStorage.getItem('editingTime') || '';
         const description = localStorage.getItem('editingDescription') || '';
+        const group = localStorage.getItem('editingGroup') || '';
         const alarm = localStorage.getItem('editingAlarm') === 'true'; // Leer el estado del checkbox.
         const repetition = localStorage.getItem('editingRepetition') || 'none'; // Obtener la repetición guardada.
         const customDays = JSON.parse(localStorage.getItem('editingCustomDays') || '[]'); // Obtener los días personalizados.
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('fecha').value = date;
         document.getElementById('tiempo').value = time;
         document.getElementById('descripcion').value = description;
+        document.getElementById('grupo').value = group;
         document.getElementById('alarma').checked = alarm;
         document.getElementById('repeticion').value = repetition;
 
@@ -68,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('editingDate');
         localStorage.removeItem('editingTime');
         localStorage.removeItem('editingDescription');
+        localStorage.removeItem('editingGroup');
         localStorage.removeItem('editingAlarm');
         localStorage.removeItem('editingRepetition');
         localStorage.removeItem('editingCustomDays');
@@ -88,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const date = document.getElementById('fecha').value;
         const time = document.getElementById('tiempo').value;
         const description = document.getElementById('descripcion').value.trim() || 'Sin descripción';
-
+        const group = document.getElementById('grupo').value.trim() || 'Sin grupo';
         const alarm = document.getElementById('alarma').checked;
         const repetition = document.getElementById('repeticion').value;
 
@@ -102,6 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             // Guardar los días seleccionados en localStorage para su uso en la edición futura.
             localStorage.setItem('editingCustomDays', JSON.stringify(days));
+            // Guardar los grupos.
+            localStorage.setItem('editingGroup', group);
         }
 
         // Comprobar que no están vacíos los campos obligatorios.
@@ -115,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             date, 
             time, 
             description, 
+            group,
             alarm, 
             repetition, 
             days: repetition === 'custom' ? days : []
@@ -138,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.removeItem('editingDate');
                     localStorage.removeItem('editingTime');
                     localStorage.removeItem('editingDescription');
+                    localStorage.removeItem('editingGroup') || '';
                     localStorage.removeItem('editingAlarm');
                     localStorage.removeItem('editingRepetition');
                     localStorage.removeItem('editingCustomDays');

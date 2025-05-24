@@ -95,6 +95,7 @@ function showAlarm(reminder) {
     toast.setAttribute("aria-atomic", "true");
 
     const message = `Recordatorio: ${reminder.title}`;
+    const group = `Grupo: ${reminder.group}`;
     const hour = `Hora: ${reminder.time}`;
     const description = reminder.description || '';
 
@@ -102,7 +103,7 @@ function showAlarm(reminder) {
     toast.innerHTML = `
         <div class="d-flex">
             <div class="toast-body">
-                <strong>${message}</strong><br/>
+                <strong>${message} | ${group}</strong><br/>
                 ${hour}<br/>
                 ${description}
             </div>
@@ -112,11 +113,11 @@ function showAlarm(reminder) {
     // Notificación del navegador.
     if (Notification.permission === "granted") {
         new Notification(message, {
-            body: `${hour}\n${description}`,
+            body: `Grupo: ${group}\nHora: ${hour}\nDescripción: ${description}`,
             icon: 'images/post-it.png' // Imagen de icono.
         });
     } else {
-        alert(`${message}\n${hour}\n${description}`);
+        alert(`Recordatorio: ${message}\nGrupo: ${group}\nHora: ${hour}\nDescripción: ${description}`);
     }
 
     container.appendChild(toast);

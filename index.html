@@ -81,6 +81,15 @@
             <button type="button" id="cancelar-edicion" class="btn btn-secondary" style="display: none;">Cancelar</button>
         </form>
 
+        <div class="mb-3">
+            <label for="filtroGrupo" class="form-label">Filtrar por grupo</label>
+            <select id="filtroGrupo" class="form-select">
+                <option value="all">Todos (sin agrupar)</option>
+                <option value="grouped">Agrupados por grupo</option>
+                <!--Opciones de grupos se añadirán-->
+            </select>
+        </div>
+
         <h2>Lista de Recordatorios</h2>
         <ul id="listaRecordatorios"></ul>
 
