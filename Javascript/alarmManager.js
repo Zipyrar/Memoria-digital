@@ -94,23 +94,37 @@ function showAlarm(reminder) {
     toast.setAttribute("aria-live", "assertive");
     toast.setAttribute("aria-atomic", "true");
 
+    const message = `Recordatorio: ${reminder.title}`;
+    const hour = `Hora: ${reminder.time}`;
+    const description = reminder.description || '';
+
+    // Crear contenido del toast.
     toast.innerHTML = `
         <div class="d-flex">
             <div class="toast-body">
-                <strong>Alarma:</strong> ${reminder.title}<br>
-                <strong>${reminder.time}</strong><br>
-                ${reminder.description}
+                <strong>${message}</strong><br/>
+                ${hour}<br/>
+                ${description}
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
         </div>
     `;
 
+    // Notificación del navegador.
+    if (Notification.permission === "granted") {
+        new Notification(message, {
+            body: `${hour}\n${description}`,
+            icon: 'images/post-it.png' // Imagen de icono.
+        });
+    } else {
+        alert(`${message}\n${hour}\n${description}`);
+    }
+
     container.appendChild(toast);
 
-    // Quitar el toast automáticamente después de 10 segundos.
+    // Quitar el toast automáticamente después de 15 segundos.
     setTimeout(() => {
         toast.remove();
-    }, 10000);
+    }, 15000);
 }
 
 // Repetir cada 10 segundos para asegurar exactitud.
