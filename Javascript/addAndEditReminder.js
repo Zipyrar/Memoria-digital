@@ -79,6 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
         form.reset();
         resetDiasPersonalizados();
 
+        // Restablecer la repetición a 'none' y forzar evento.
+        const repetitionSelect = document.getElementById('repeticion');
+        repetitionSelect.value = 'none';
+        repetitionSelect.dispatchEvent(new Event('change'));
+
         btnSubmit.textContent = 'Añadir';
         btnCancel.style.display = 'none';
     });
