@@ -8,16 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCancel = document.getElementById('cancelar-edicion');
 
     // Función para resetear los días personalizados.
-    function resetDiasPersonalizados() {
+    function resetCustomDays() {
         ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'].forEach(day => {
             const checkbox = document.getElementById(day);
             if (checkbox) {
                 checkbox.checked = false;
             }
         });
-        const diasPersonalizados = document.getElementById('dias-personalizados');
-        if (diasPersonalizados) {
-            diasPersonalizados.style.display = 'none';
+        const customDays = document.getElementById('dias-personalizados');
+        if (customDays) {
+            customDays.style.display = 'none';
         }
     }
 
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Restaurar los valores iniciales en el formulario.
         form.reset();
-        resetDiasPersonalizados();
+        resetCustomDays();
 
         // Restablecer la repetición a 'none' y forzar evento.
         const repetitionSelect = document.getElementById('repeticion');
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             days: repetition === 'custom' ? days : []
         };
 
-        resetDiasPersonalizados();
+        resetCustomDays();
 
         if (editingKey) {
             const reminderRef = ref(database, `recordatorios/${editingKey}`);
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(() => {
                     alert('Recordatorio actualizado');
                     form.reset();
-                    resetDiasPersonalizados();
+                    resetCustomDays();
 
                     btnSubmit.textContent = 'Añadir';
 
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(() => {
                     alert('Recordatorio guardado');
                     form.reset();
-                    resetDiasPersonalizados();
+                    resetCustomDays();
 
                     // Forzar evento change para ocultar bien los días personalizados.
                     const repeticionSelect = document.getElementById('repeticion');

@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let groupsSet = new Set(); // Detectar grupos únicos.
 
     // Función para actualizar la lista según filtro.
-    function actualizarLista() {
+    function updateList() {
         list.innerHTML = '';
 
         const filter = groupFilter.value;
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filter === 'all') {
             // Mostrar todos sin agrupar.
             Object.entries(allReminders).forEach(([key, reminder]) => {
-                const item = crearItemRecordatorio(reminder, key);
+                const item = createItemReminder(reminder, key);
                 list.appendChild(item);
             });
 
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ulGroup.classList.add('list-group', 'mb-4');
 
                 groups[group].forEach(({ key, reminder }) => {
-                    const item = crearItemRecordatorio(reminder, key);
+                    const item = createItemReminder(reminder, key);
                     ulGroup.appendChild(item);
                 });
 
@@ -54,17 +54,17 @@ document.addEventListener('DOMContentLoaded', () => {
             // Mostrar solo recordatorios del grupo seleccionado.
             Object.entries(allReminders).forEach(([key, reminder]) => {
                 if ((reminder.group || '') === filter) {
-                    const item = crearItemRecordatorio(reminder, key);
+                    const item = createItemReminder(reminder, key);
                     list.appendChild(item);
                 }
             });
         }
 
-        asignarEventosBotones();
+        asingEventsButtons();
     }
 
     // Crear lista con los datos del recordatorio.
-    function crearItemRecordatorio(reminder, key) {
+    function createItemReminder(reminder, key) {
         const item = document.createElement('li');
         item.classList.add('mb-3', 'list-group-item');
 
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Asignar eventos a botones Editar y Eliminar.
-    function asignarEventosBotones() {
+    function asingEventsButtons() {
         document.querySelectorAll('.editar').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = e.target.dataset.id;
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Listener para cambiar filtro.
-    groupFilter.addEventListener('change', actualizarLista);
+    groupFilter.addEventListener('change', updateList);
 
     // Cargar datos de Firebase.
     onValue(remindersRef, (snapshot) => {
@@ -156,6 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Actualizar la lista según filtro actual.
-        actualizarLista();
+        updateList();
     });
 });
