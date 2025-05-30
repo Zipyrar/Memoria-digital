@@ -1,0 +1,26 @@
+body.light-mode {
+    background-color: white;
+    color: black;
+}
+
+body.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+.btn-light-dark-toggle {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.toast.dark-mode {
+    background-color: #333 !important;
+    color: white !important;
+}
+
+.toast.light-mode {
+    background-color: #ffc107 !important;
+    color: black !important;
+}
