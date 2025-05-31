@@ -24,3 +24,10 @@ body.dark-mode {
     background-color: #ffc107 !important;
     color: black !important;
 }
+
+body.dark-mode #tema {
+    color: white !important; /* Texto blanco en modo oscuro. */
+}
+body.light-mode #tema {
+    color: black !important; /* Texto negro en modo claro. */
+}
