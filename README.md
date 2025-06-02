@@ -7,7 +7,7 @@
 <ul>
   <li>Descripción.</li>
   <li>Funciones del proyecto.</li>
-  <li>Descargar, descomprimir y ejecutar el proyecto</li>
+  <li>Descargar, descomprimir y ejecutar el proyecto.</li>
   <li>Tecnologías usadas.</li>
   <li>Personas Colaboradoras del Proyecto.</li>
   <li>Desarrollador del Proyecto.</li>
