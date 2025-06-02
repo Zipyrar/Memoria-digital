@@ -1,6 +1,6 @@
 # Memoria-digital
 
-<p align="left">🏗️<img src="https://img.shields.io/badge/Estado-En_desarrollo-red"/>🏗️</p>
+<p align="left">🏁<img src="https://img.shields.io/badge/Estado-Terminado-green"/>🏁</p>
 
 <h3><u>Índice</u></h3>
 
@@ -16,7 +16,7 @@
 <br/>
 <h3>Descripción del proyecto</h3>
 <hr/>
-<p>Este proyecto consiste en una aplicación web, que trata de que se pueda poner recordatorios, alarmas, y en el futuro, varias funciones más, para evitar la posibilidad de olvidar algo importante, o de ir a un sitio a x hora, <b>todo en una misma app</b>. También da la posibilidad de hacer que se repitan diariamente, semanalmente, o de forma personal.</p>
+<p>Este proyecto consiste en una aplicación web, que trata de que se pueda poner recordatorios, alarmas, y agruparlos, para evitar la posibilidad de olvidar algo importante, o de ir a un sitio a x hora, <b>todo en una misma app</b>.<br/> También da la posibilidad de hacer que se repitan diariamente, semanalmente, o de forma personal, y filtrar los grupos para mostrar los recordatorios con esa etiqueta.</p>
 <p>Es muy útil, especialmente para apuntar las cosas importantes que tengas que hacer en el ordenador.</p>
 <br/>
 <h3>⚒️<u>Funciones del proyecto</u>🛠️</h3>
@@ -25,6 +25,8 @@
   <li>Función 1: Añadir recordatorios (título, fecha, hora, descripción opcional, repetición opcional).</li>
   <li>Función 2: Opción de activar o desactivar una alarma sonora.</li>
   <li>Función 3: Opciones de editar o eliminar un recordatorio ya establecido.</li>
+  <li>Función 4: Opción de agrupar los recordatorios en etiquetas (Trabajo, Deportes...)</li>
+  <li>Función 5: Alternar entre modo claro y oscuro.</li>
 </ul>
 <br/>
 <h3>📁<u>Descargar, descomprimir y ejecutar el proyecto</u>📂</h3>
@@ -41,9 +43,11 @@
 <h3><u>Tecnologías usadas</u></h3>
 <hr/>
 <ul>
-  <li>JavaScript</li>
-  <li>HTML5</li>
-  <li>Firebase, con Realtime Database</li>
+  <li>JavaScript: Es el lenguaje principal de programación que gestiona toda la lógica del cliente.</li>
+  <li>HTML5: Se usa como componente base del proyecto.</li>
+  <li>Firebase, con Realtime Database: Se utiliza como sistema de persistencia en la nube. Almacena todos los recordatorios.</li>
+  <li>Bootstrap: Framework CSS usado para la parte visual e interfaz de usuario.</li>
+  <li>CSS: Usado para alternar entre el modo claro y oscuro.</li>
 </ul>
 <br/>
 <h3><u>Colaboradores</u></h3>
